@@ -22,7 +22,7 @@ model.add_concepts(tags)
 
 # use this file to add all images from a directory with appropriate training tags
 
-image_filepath = 'C:\\Users\\Caroline\\Desktop\\mww_coat\\'
+image_filepath = 'C:\\Users\\nvara\\Desktop\\uofthacks4\\'
 images = os.listdir(image_filepath)
 
 failed = 0
