@@ -8,7 +8,7 @@ import datetime
 import time
 from time import gmtime, strftime
 
-UPLOAD_FOLDER = 'images/'
+UPLOAD_FOLDER = 'users/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 
