@@ -68,7 +68,10 @@ def upload():
         file = request.files['file']
         if file and allowed_file(file.filename):
             now = datetime.now()
-            filename = os.path.join(app.config['UPLOAD_FOLDER'], "%s.%s" % (now.strftime("%Y-%m-%d-%H-%M-%S-%f"), file.filename.rsplit('.', 1)[1]))
+            username = request.cookies.get('userID')
+            filename = os.path.join(app.config['UPLOAD_FOLDER'], username)
+            filename = os.path.join(app.config['UPLOAD_FOLDER']+username, "%s.%s" % (now.strftime("%Y-%m-%d-%H-%M-%S-%f"), file.filename.rsplit('.', 1)[1]))
+            print(app.config['UPLOAD_FOLDER']+username)
             file.save(filename)
             return jsonify({"success":True})
 
