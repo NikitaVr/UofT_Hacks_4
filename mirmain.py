@@ -39,9 +39,12 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     return render_template('index.html')
+
 @app.route('/results')
 def results():
-    return render_template('result.html')
+    username = request.cookies.get('userID')
+    ret = [1,645,678,90,"hello world"]
+    return render_template('result.html',result = ret)
 
 
 
