@@ -44,7 +44,7 @@ def index():
 
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['POST','GET'])
 def upload():
     if request.method == 'POST':
         file = request.files['file']
@@ -72,6 +72,8 @@ def upload():
             print(pred)
 
             return jsonify({"success":True})
+    elif(request.method == 'GET'):
+        return render_template("upload.html")
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
@@ -86,16 +88,14 @@ def my_form_post():
             os.makedirs("users/" + username + "/")
             resp = make_response(render_template('upload.html'))
             resp.set_cookie('userID',username)
-            return resp
+            return redirect("/upload")
         elif((username!= "") and (os.path.isdir("users/" + username + "/"))):
             resp = make_response(render_template('upload.html'))
             resp.set_cookie('userID',username)
-            return resp
-
+            return redirect("/upload")
         else:
             return "<h1>Please enter a Username!!</h1>"
             
-        return render_template('upload.html')
     else:
         return redirect("/")
 
