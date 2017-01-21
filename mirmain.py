@@ -6,9 +6,7 @@ from pymongo import MongoClient
 import ast
 from datetime import datetime
 from time import gmtime, strftime
-
 import json
-
 from clarifai import rest
 from clarifai.rest import ClarifaiApp
 from clarifai.rest import Image as ClImage
