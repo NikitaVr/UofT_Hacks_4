@@ -276,7 +276,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.428571429;
-  color: #333;
+  color: #ffffff;
   background-color: #fff;
 }
 input,
@@ -1688,7 +1688,7 @@ output {
 }
 .form-control {
   display: block;
-  width: 100%;
+  width: 50%;
   height: 34px;
   padding: 6px 12px;
   font-size: 14px;
@@ -3760,6 +3760,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     margin-left: -15px;
   }
 }
+
 .navbar-toggle {
   position: relative;
   float: right;
@@ -5685,6 +5686,9 @@ th.visible-xs,
 td.visible-xs {
   display: none !important;
 }
+ body, html, .container-fluid {
+         height: 100%;
+    }
 @media (max-width: 767px) {
   .visible-xs {
     display: block !important;
