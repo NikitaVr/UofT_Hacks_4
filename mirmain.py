@@ -7,11 +7,24 @@ import ast
 from datetime import datetime
 from time import gmtime, strftime
 
+import json
+
+from clarifai import rest
+from clarifai.rest import ClarifaiApp
+from clarifai.rest import Image as ClImage
+
+# run these lines to access the Mirror Mirror application
+os.environ["CLARIFAI_APP_ID"] = "ldgNgiUGMGdgm9M2iGKRPQxGT3s-Ds9j2wtuZODX"
+os.environ["CLARIFAI_APP_SECRET"] = "NkNVKSx41vBwAAqMe9OHAJlliFfrb3xMiIr8zzAq"
+
+# initializing clarify app
+cApp = ClarifaiApp()
+model = cApp.models.get('color')
 
 UPLOAD_FOLDER = 'users/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
-
+#Initiallizing Flask App
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -73,6 +86,13 @@ def upload():
             filename = os.path.join(app.config['UPLOAD_FOLDER']+username, "%s.%s" % (now.strftime("%Y-%m-%d-%H-%M-%S-%f"), file.filename.rsplit('.', 1)[1]))
             print(app.config['UPLOAD_FOLDER']+username)
             file.save(filename)
+
+            #image = ClImage(url='https://samples.clarifai.com/metro-north.jpg')
+            image = ClImage(file_obj=open(filename, 'rb'))
+            pred = model.predict([image])
+
+            print(pred)
+
             return jsonify({"success":True})
 
 def allowed_file(filename):
