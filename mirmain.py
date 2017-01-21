@@ -12,12 +12,12 @@ from clarifai.rest import ClarifaiApp
 from clarifai.rest import Image as ClImage
 
 # run these lines to access the Mirror Mirror application
-os.environ["CLARIFAI_APP_ID"] = "ldgNgiUGMGdgm9M2iGKRPQxGT3s-Ds9j2wtuZODX"
-os.environ["CLARIFAI_APP_SECRET"] = "NkNVKSx41vBwAAqMe9OHAJlliFfrb3xMiIr8zzAq"
+os.environ["CLARIFAI_APP_ID"] = "fXM043GazV7t45lQSFQpw3Jj8NIuRWO4PEVNtzBS"
+os.environ["CLARIFAI_APP_SECRET"] = "mKsHrQ7CKaHXROyeNfZlaDNZ61W2BH3jjIJ9NJ_7"
 
 # initializing clarify app
 cApp = ClarifaiApp()
-model = cApp.models.get('color')
+model = cApp.models.get('Style-Categorizer')
 
 UPLOAD_FOLDER = 'users/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
