@@ -6,15 +6,15 @@ from clarifai.rest import ClarifaiApp
 from clarifai.rest import Image as ClImage
 
 
-os.environ["CLARIFAI_APP_ID"] = "ldgNgiUGMGdgm9M2iGKRPQxGT3s-Ds9j2wtuZODX"
-os.environ["CLARIFAI_APP_SECRET"] = "NkNVKSx41vBwAAqMe9OHAJlliFfrb3xMiIr8zzAq"
+os.environ["CLARIFAI_APP_ID"] = "fXM043GazV7t45lQSFQpw3Jj8NIuRWO4PEVNtzBS"
+os.environ["CLARIFAI_APP_SECRET"] = "mKsHrQ7CKaHXROyeNfZlaDNZ61W2BH3jjIJ9NJ_7"
 
 
 app = ClarifaiApp()
 
 
 # get the custom model 'modelv2'
-model = app.models.get('modelv2')
+model = app.models.get('Style-Categorizer')
 tags = ["coat"]
 
 # add the tag to concepts.
