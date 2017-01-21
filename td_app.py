@@ -111,8 +111,8 @@ def my_form_post():
 
     username = request.form['username']
 
-    if(not(os.path.isdir("images/" + username + "/"))):
-        os.makedirs("images/" + username + "/")
+    if(not(os.path.isdir("users/" + username + "/"))):
+        os.makedirs("users/" + username + "/")
 
     processed_text = username.upper()
     return processed_text
