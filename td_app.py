@@ -67,6 +67,8 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+    if(not(os.path.isdir("testFolder/"))):
+        os.makedirs('testFolder/')
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -91,6 +93,11 @@ def upload_file():
       <p><input type=file name=file>
          <input type=submit value=Upload>
     </form>
+
+    <form action="login" method="POST">
+        <input type="text" name="username">
+        <input type="submit" name="my-form" value="Send">
+    </form>
     '''
 
 
@@ -98,6 +105,17 @@ def upload_file():
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
+
+@app.route('/login', methods=['POST'])
+def my_form_post():
+
+    username = request.form['username']
+
+    if(not(os.path.isdir("images/" + username + "/"))):
+        os.makedirs("images/" + username + "/")
+
+    processed_text = username.upper()
+    return processed_text
 
 @app.route("/decreasekarma",methods=["POST"])
 def decrease_karma():
