@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory,make_response
 from werkzeug.utils import secure_filename
 from pprint import pprint
 from pymongo import MongoClient
@@ -7,6 +7,7 @@ import ast
 import datetime 
 import time
 from time import gmtime, strftime
+
 
 UPLOAD_FOLDER = 'users/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -67,8 +68,6 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
-    if(not(os.path.isdir("testFolder/"))):
-        os.makedirs('testFolder/')
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -106,16 +105,27 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 
+
+
+
 @app.route('/login', methods=['POST'])
 def my_form_post():
-
-    username = request.form['username']
-
-    if(not(os.path.isdir("users/" + username + "/"))):
+    username = str(request.form['username']).strip()
+    print(username)
+    if((username!= "") and (not(os.path.isdir("users/" + username + "/")))):
         os.makedirs("users/" + username + "/")
+        resp = make_response(render_template('index.html'))
+        resp.set_cookie('userID',username)
+        return resp
+    elif((username!= "") and (os.path.isdir("users/" + username + "/"))):
+        resp = make_response(render_template('index.html'))
+        resp.set_cookie('userID',username)
+        return resp
 
-    processed_text = username.upper()
-    return processed_text
+    else:
+        return "<h1>Please enter a Username!!</h1>"
+        
+    return render_template('index.html')
 
 @app.route("/decreasekarma",methods=["POST"])
 def decrease_karma():
