@@ -38,7 +38,7 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return render_template('index.html')
 
 
 
@@ -99,6 +99,10 @@ def my_form_post():
     else:
         return redirect("/")
 
+@app.route('/result', methods=['GET'])
+def results():
+    if(request.method == 'GET'):
+        return render_template("result.html")
 
 if __name__ == '__main__':
     app.run(
