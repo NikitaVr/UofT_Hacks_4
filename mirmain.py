@@ -71,18 +71,18 @@ def my_form_post():
         print(username)
         if((username!= "") and (not(os.path.isdir("users/" + username + "/")))):
             os.makedirs("users/" + username + "/")
-            resp = make_response(render_template('index.html'))
+            resp = make_response(render_template('upload.html'))
             resp.set_cookie('userID',username)
             return resp
         elif((username!= "") and (os.path.isdir("users/" + username + "/"))):
-            resp = make_response(render_template('index.html'))
+            resp = make_response(render_template('upload.html'))
             resp.set_cookie('userID',username)
             return resp
 
         else:
             return "<h1>Please enter a Username!!</h1>"
             
-        return render_template('index.html')
+        return render_template('upload.html')
     else:
         return redirect("/")
 
