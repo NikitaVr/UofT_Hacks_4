@@ -5,8 +5,8 @@ $(function(){
 	
 	dropbox.filedrop({
 		paramname: 'file',
-		maxfiles: 10,
-    	maxfilesize: 5,
+		maxfiles: 250,
+    	maxfilesize: 10,
 		url: '/upload',
 		uploadFinished:function(i,file,response){
 			$.data(file).addClass('done');
