@@ -114,7 +114,7 @@ def decrement_karma(query,collection):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return "Hello World" #render_template("index.html")
 
 @app.route("/owed",methods=["POST"])
 def debt_owed():
@@ -182,7 +182,7 @@ def postTransaction():
 
 if __name__ == '__main__':
     app.run(
-        host = "0.0.0.0",
-        port = 80
+        host = "localhost",
+        port = 5000
     )
 
