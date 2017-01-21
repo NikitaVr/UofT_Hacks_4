@@ -20,7 +20,7 @@ cApp = ClarifaiApp()
 model = cApp.models.get('Style-Categorizer')
 
 client = MongoClient('localhost',27017)
-db = client.FinhacksDB
+db = client.MirrorMirror
 user_images = db.user_Images
 
 UPLOAD_FOLDER = 'users/'
