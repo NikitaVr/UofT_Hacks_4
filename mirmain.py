@@ -19,6 +19,10 @@ os.environ["CLARIFAI_APP_SECRET"] = "mKsHrQ7CKaHXROyeNfZlaDNZ61W2BH3jjIJ9NJ_7"
 cApp = ClarifaiApp()
 model = cApp.models.get('Style-Categorizer')
 
+client = MongoClient('localhost',27017)
+db = client.FinhacksDB
+user_images = db.user_Images
+
 UPLOAD_FOLDER = 'users/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
@@ -52,10 +56,19 @@ def upload():
             print(app.config['UPLOAD_FOLDER']+username)
             file.save(filename)
 
+
             #image = ClImage(url='https://samples.clarifai.com/metro-north.jpg')
             image = ClImage(file_obj=open(filename, 'rb'))
             pred = model.predict([image])
 
+
+            user_images.insert_one(
+                {
+                    "username": username,
+                    "filepath": filename,
+                    "clarifai_data": pred       
+                }
+            )
             print(pred)
 
             return jsonify({"success":True})
