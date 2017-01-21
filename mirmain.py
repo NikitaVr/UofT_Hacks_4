@@ -38,7 +38,7 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return render_template('index.html')
 
 
 
@@ -51,6 +51,7 @@ def upload():
         if file and allowed_file(file.filename):
             now = datetime.now()
             username = request.cookies.get('userID')
+            print(username)
             filename = os.path.join(app.config['UPLOAD_FOLDER'], username)
             filename = os.path.join(app.config['UPLOAD_FOLDER']+username, "%s.%s" % (now.strftime("%Y-%m-%d-%H-%M-%S-%f"), file.filename.rsplit('.', 1)[1]))
             print(app.config['UPLOAD_FOLDER']+username)
@@ -88,11 +89,11 @@ def my_form_post():
             os.makedirs("users/" + username + "/")
             resp = make_response(render_template('upload.html'))
             resp.set_cookie('userID',username)
-            return redirect("/upload")
+            return resp
         elif((username!= "") and (os.path.isdir("users/" + username + "/"))):
             resp = make_response(render_template('upload.html'))
             resp.set_cookie('userID',username)
-            return redirect("/upload")
+            return resp
         else:
             return "<h1>Please enter a Username!!</h1>"
             
