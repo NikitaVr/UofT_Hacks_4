@@ -49,9 +49,12 @@
             </div>
 
             {% for key in result[0] %}
-                <h3> {{ key[0] }} : {{ key[1] }}</h3>
+                <h3> {{ key[0] }} : {{ key[1] }} %</h3>
             {% endfor %}
 
+
+            <br> </br>
+            <br> </br>
             <h3> Suggested Friends </h3>
             {% for key in result[2] %}
                 <h3>{{ result[1][ loop.index - 1 ] }}</h3>

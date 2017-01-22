@@ -56,7 +56,7 @@ def results():
 
     i = 0
     for style in sorted_styles:
-        sorted_styles[i] = (style[0],round(style[1], 2))
+        sorted_styles[i] = (style[0],round(style[1] * 100, 2))
         i += 1
 
     topStyle = sorted_styles[0][0]
@@ -85,9 +85,31 @@ def getStyleList(username):
 
     queryResults = user_images.find({"username": username})
     for r in queryResults:
-        styles['Casual'] += r['clarifai_data']['outputs'][0]['data']['concepts'][catToNum["Casual"]]['value']
-        styles['Business'] += r['clarifai_data']['outputs'][0]['data']['concepts'][catToNum["Business"]]['value']
-        styles['Evening'] += r['clarifai_data']['outputs'][0]['data']['concepts'][catToNum["Evening"]]['value']
+
+
+
+        casualList = r['clarifai_data']['outputs'][0]['data']['concepts']
+        businessList = r['clarifai_data']['outputs'][0]['data']['concepts']
+        eveningList = r['clarifai_data']['outputs'][0]['data']['concepts']
+
+
+        for obj in r['clarifai_data']['outputs'][0]['data']['concepts']:
+            if obj['id']=='Casual':
+                styles['Casual'] += obj['value']
+            if obj['id']=='Business':
+                styles['Business'] += obj['value']
+            if obj['id']=='Evening':
+                styles['Evening'] += obj['value']
+       
+
+
+        #styles['Casual'] += casualAmount
+        
+        
+        
+        #r['clarifai_data']['outputs'][0]['data']['concepts'][catToNum["Casual"]]['value']
+        #styles['Business'] += BusinessAmount #r['clarifai_data']['outputs'][0]['data']['concepts'][catToNum["Business"]]['value']
+        #styles['Evening'] += EveningAmount#r['clarifai_data']['outputs'][0]['data']['concepts'][catToNum["Evening"]]['value']
         count += 1
 
     if count > 0:
