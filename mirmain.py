@@ -98,7 +98,7 @@ def getStyleList(username):
                 styles['Casual'] += obj['value']
             if obj['id']=='Business':
                 styles['Business'] += obj['value']
-            if obj['id']=='Evening':
+            if obj['id']=='evening':
                 styles['Evening'] += obj['value']
        
 
