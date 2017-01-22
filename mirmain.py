@@ -47,8 +47,8 @@ def index():
 @app.route('/results')
 def results():
     username = request.cookies.get('userID')
-    path = os.path.join(app.config['UPLOAD_FOLDER'], username)
-    file_list = [path+"/"+file for file in os.listdir(path)]
+    #path = os.path.join(app.config['UPLOAD_FOLDER'], username)
+    #file_list = [path+"/"+file for file in os.listdir(path)]
 
 
     sorted_styles = getStyleList(username)
@@ -66,7 +66,7 @@ def results():
 
     ret = [1,645,678,90,"hello world", sorted_styles, str(matchedUsers), str(matchedUserPhotoes)]
 
-    return render_template('result.html',result = ret)
+    return render_template('result.html',result = matchedUserPhotoes)
 
 
 def getStyleList(username):
