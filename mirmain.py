@@ -28,6 +28,8 @@ users = db.app_users
 UPLOAD_FOLDER = 'users/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
+catToNum = {"Casual" : 0, "Business" : 2, "Evening" : 1}
+
 #Initiallizing Flask App
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -53,9 +55,14 @@ def results():
 
     matchedUsers = findMatches(username, topStyle)
 
+    matchedUserPhotoes = []
+
+    for un in matchedUsers:
+        matchedUserPhotoes.append(findTopImage(un))
+
     print(sorted_styles)
 
-    ret = [1,645,678,90,"hello world", sorted_styles, str(matchedUsers)]
+    ret = [1,645,678,90,"hello world", sorted_styles, str(matchedUsers), str(matchedUserPhotoes)]
 
     return render_template('result.html',result = ret)
 
@@ -68,9 +75,9 @@ def getStyleList(username):
 
     queryResults = user_images.find({"username": username})
     for r in queryResults:
-        styles['Casual'] += r['clarifai_data']['outputs'][0]['data']['concepts'][0]['value']
-        styles['Business'] += r['clarifai_data']['outputs'][0]['data']['concepts'][2]['value']
-        styles['Evening'] += r['clarifai_data']['outputs'][0]['data']['concepts'][1]['value']
+        styles['Casual'] += r['clarifai_data']['outputs'][0]['data']['concepts'][catToNum["Casual"]]['value']
+        styles['Business'] += r['clarifai_data']['outputs'][0]['data']['concepts'][catToNum["Business"]]['value']
+        styles['Evening'] += r['clarifai_data']['outputs'][0]['data']['concepts'][catToNum["Evening"]]['value']
         count += 1
 
     if count > 0:
@@ -114,6 +121,23 @@ def findMatches(username, topStyle):
             break
 
     return matches
+
+def findTopImage(username):
+    topStyle = users.find_one({"username" : username})['Top Style']
+
+    #print(['clarifai_data']['outputs'][0]['data']['concepts'][catToNum[topStyle]]['value'])
+
+    images = list(user_images.find({"username": username}))
+
+    topScore = 0
+
+    topImagePath = None
+
+    for i in images:
+        if i['clarifai_data']['outputs'][0]['data']['concepts'][catToNum[topStyle]]['value'] > topScore:
+            topImagePath = i['filepath']
+
+    return topImagePath
 
 
 @app.route('/upload', methods=['POST','GET'])
