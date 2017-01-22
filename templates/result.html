@@ -47,10 +47,13 @@
             </div>
 
             </div>
-            {% for key in result %}
-            <p>{{ key }}</p>
-            <img src="../{{ key }}" alt="Smiley face" height="300" width="300">
 
+
+            i = 0
+            {% for key in result[2] %}
+            <p>{{ result[1][i] }}</p>
+            <img src="../{{ key }}" alt="Smiley face" height="300" width="300">
+            i++
             {% endfor %}
 
 

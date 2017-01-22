@@ -66,7 +66,9 @@ def results():
 
     ret = [1,645,678,90,"hello world", sorted_styles, str(matchedUsers), str(matchedUserPhotoes)]
 
-    return render_template('result.html',result = matchedUserPhotoes)
+    dataToReturn = [sorted_styles, matchedUsers, matchedUserPhotoes]
+
+    return render_template('result.html',result = dataToReturn)
 
 
 def getStyleList(username):
