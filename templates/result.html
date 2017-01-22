@@ -48,12 +48,14 @@
 
             </div>
 
+            {% for key in result[0] %}
+                <h3> {{ key[0] }} : {{ key[1] }}</h3>
+            {% endfor %}
 
-            i = 0
+            <h3> Suggested Friends </h3>
             {% for key in result[2] %}
-            <p>{{ result[1][i] }}</p>
-            <img src="../{{ key }}" alt="Smiley face" height="300" width="300">
-            i++
+                <h3>{{ result[1][ loop.index - 1 ] }}</h3>
+                <img src="../{{ key }}" alt="Smiley face" height="300" width="300">
             {% endfor %}
 
 

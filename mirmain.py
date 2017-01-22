@@ -53,6 +53,12 @@ def results():
 
     sorted_styles = getStyleList(username)
 
+
+    i = 0
+    for style in sorted_styles:
+        sorted_styles[i] = (style[0],round(style[1], 2))
+        i += 1
+
     topStyle = sorted_styles[0][0]
 
     matchedUsers = findMatches(username, topStyle)
