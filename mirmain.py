@@ -25,7 +25,7 @@ db = client.MirrorMirror
 user_images = db.user_Images
 users = db.app_users
 
-UPLOAD_FOLDER = 'users/'
+UPLOAD_FOLDER = 'static/users/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 catToNum = {"Casual" : 0, "Business" : 2, "Evening" : 1}
@@ -47,7 +47,7 @@ def index():
 @app.route('/results')
 def results():
     username = request.cookies.get('userID')
-    path = os.path.join("static/users", username)
+    path = os.path.join(app.config['UPLOAD_FOLDER'], username)
     file_list = [path+"/"+file for file in os.listdir(path)]
 
 
@@ -183,12 +183,12 @@ def my_form_post():
     if(request.method == 'POST'):
         username = str(request.form['username']).strip()
         print(username)
-        if((username!= "") and (not(os.path.isdir("users/" + username + "/")))):
-            os.makedirs("users/" + username + "/")
+        if((username!= "") and (not(os.path.isdir("static/users/" + username + "/")))):
+            os.makedirs("static/users/" + username + "/")
             resp = make_response(render_template('upload.html'))
             resp.set_cookie('userID',username)
             return resp
-        elif((username!= "") and (os.path.isdir("users/" + username + "/"))):
+        elif((username!= "") and (os.path.isdir("static/users/" + username + "/"))):
             resp = make_response(render_template('upload.html'))
             resp.set_cookie('userID',username)
             return resp
