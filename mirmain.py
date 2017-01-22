@@ -10,6 +10,7 @@ import json
 from clarifai import rest
 from clarifai.rest import ClarifaiApp
 from clarifai.rest import Image as ClImage
+import operator
 
 # run these lines to access the Mirror Mirror application
 os.environ["CLARIFAI_APP_ID"] = "fXM043GazV7t45lQSFQpw3Jj8NIuRWO4PEVNtzBS"
@@ -22,6 +23,7 @@ model = cApp.models.get('Style-Categorizer')
 client = MongoClient('localhost',27017)
 db = client.MirrorMirror
 user_images = db.user_Images
+users = db.app_users
 
 UPLOAD_FOLDER = 'users/'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -43,11 +45,75 @@ def index():
 @app.route('/results')
 def results():
     username = request.cookies.get('userID')
-    ret = [1,645,678,90,"hello world"]
+    
+
+    sorted_styles = getStyleList(username)
+
+    topStyle = sorted_styles[0][0]
+
+    matchedUsers = findMatches(username, topStyle)
+
+    print(sorted_styles)
+
+    ret = [1,645,678,90,"hello world", sorted_styles, str(matchedUsers)]
+
     return render_template('result.html',result = ret)
 
 
+def getStyleList(username):
+    styles = {'Casual': 0, 'Business': 0, 'Evening': 0}
 
+
+    count = 0
+
+    queryResults = user_images.find({"username": username})
+    for r in queryResults:
+        styles['Casual'] += r['clarifai_data']['outputs'][0]['data']['concepts'][0]['value']
+        styles['Business'] += r['clarifai_data']['outputs'][0]['data']['concepts'][2]['value']
+        styles['Evening'] += r['clarifai_data']['outputs'][0]['data']['concepts'][1]['value']
+        count += 1
+
+    if count > 0:
+        styles['Casual'] = styles['Casual']/count
+        styles['Business'] = styles['Business']/count
+        styles['Evening'] = styles['Evening']/count
+
+
+
+    #x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+    sorted_styles = sorted(styles.items(), key=operator.itemgetter(1), reverse=True)
+
+    topStyle = sorted_styles[0][0]
+
+    
+
+    print("TOP STYLE::: " + topStyle)
+
+    #updateResult = users.update()
+
+    userUpdate = {"username" : username, "Top Style" : topStyle}
+
+    updateResult = users.update({"username" : username},userUpdate, upsert = True)
+
+    return sorted_styles
+    
+def findMatches(username, topStyle):
+    queryResult = users.find({"username" : {'$ne' : username}, "Top Style" : topStyle})
+
+    matches = []
+
+    #used to limit number of results, as the build in querry limit seems to break the querry....
+    limit = 3
+    count = 0
+
+    for r in queryResult:
+        print(r)
+        matches.append(r["username"])
+        count += 1
+        if count >= limit:
+            break
+
+    return matches
 
 
 @app.route('/upload', methods=['POST','GET'])
